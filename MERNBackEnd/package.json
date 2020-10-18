@@ -1,0 +1,15 @@
+{
+  "name": "MERNBackEnd",
+  "version": "1.0.0",
+  "description": "A review of how to write basic setups for MERN Back End",
+  "main": "/dist/server.generated.js",
+  "author": "Son To",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "dev": "^0.1.3"
+  }
+}

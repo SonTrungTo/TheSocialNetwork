@@ -57,9 +57,9 @@ UserSchema.methods = {
     }
 };
 
-UserSchema.path(hashed_password).validate(function (v) {
+UserSchema.path('hashed_password').validate(function (v) {
     const password_pattern =
-    /^(?=*[a-z])(?=*[A-Z])(?=*\d)(?=*[!#%?$@&=].{8,})$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#%?$@&=]).{8,}$/;
     if (this._password && !password_pattern.test(this._password)) {
         this.invalidate('password', 'Password must contain 1 digit, ' +
         '1 lowercase letter(a-z), 1 uppercase letter(A-Z), ' +

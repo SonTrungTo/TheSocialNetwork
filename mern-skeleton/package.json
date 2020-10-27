@@ -1,7 +1,7 @@
 {
-  "name": "MERNBackEnd",
+  "name": "mern-skeleton",
   "version": "1.0.0",
-  "description": "A review of how to write basic setups for MERN Back End",
+  "description": "A review of how to write basic setups for MERN Fullstack",
   "main": "/dist/server.generated.js",
   "author": "Son To",
   "license": "MIT",

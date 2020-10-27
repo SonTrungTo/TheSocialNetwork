@@ -1,3 +1,4 @@
+// Back-end codes
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -8,7 +9,15 @@ import Template from "../template";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 
+// Development bundling client codes
+import path from "path";
+import devBundle from "./devBundle"; // Comment out when in production
+
 const app = express();
+const CURRENT_WORKING_DIR = process.cwd();
+
+app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
+devBundle.compile(app); // Comment out when in production
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

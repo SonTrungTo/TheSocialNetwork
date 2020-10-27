@@ -4,12 +4,11 @@ export default () => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>BackEnd Only</title>
+        <title>SONBOOK</title>
     </head>
     <body>
-        <div id="root">
-            <h1>Hello Word</h1>
-        </div>
+        <div id="root"></div>
+        <script type="text/javascript" src="/dist/bundle.js"></script>
     </body>
     </html>`;
 };

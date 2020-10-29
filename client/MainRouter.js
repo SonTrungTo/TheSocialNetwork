@@ -5,6 +5,7 @@ import Home from "./core/Home";
 import Users from "./user/Users";
 import Signup from "./user/Signup";
 import Signin from "./auth/Signin";
+import Profile from "./user/Profile";
 
 const MainRouter = () =>
     <div>
@@ -13,6 +14,7 @@ const MainRouter = () =>
             <PrivateRoute path="/users" component={ Users } />
             <Route path="/signup" component={ Signup } />
             <Route path="/signin" component={ Signin } />
+            <PrivateRoute path="/user/:userId" component={ Profile } />
         </Switch>
     </div>
 

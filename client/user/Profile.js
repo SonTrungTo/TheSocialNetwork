@@ -5,7 +5,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
@@ -23,11 +22,8 @@ const useStyles = makeStyles(theme => ({
         padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px \
         ${theme.spacing(2)}px`,
         color: theme.palette.primary.main,
-        textAlign: 'center'
-    },
-    root: {
-        padding: '0 30px',
-        boxShadow: '0 3px 5px 2px rgba(98, 66, 255, 1)'
+        textAlign: 'center',
+        textTransform: 'capitalize'
     }
 }));
 
@@ -62,8 +58,40 @@ export default function Profile(props) {
     }
 
     return (
-        <Paper>
-            
+        <Paper elevation={4} className={ classes.root }>
+            <Typography variant="h6" component="p" className={ classes.title }>
+                Profile
+            </Typography>
+            <List>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <Person />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={ user.name }
+                    secondary={ user.email } />
+                    { auth.isAuthenticated().user &&
+                    auth.isAuthenticated().user._id === user._id && (
+                    <ListItemSecondaryAction>
+                        <Link to={"/user/edit/" + user._id}>
+                            <IconButton color="primary" aria-label="Edit">
+                                <Edit />
+                            </IconButton>
+                        </Link>
+                        <IconButton color="secondary">
+                            <Delete />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                    ) }
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemText primary={
+                        "Joined: " + new Date(user.created).toDateString()
+                    } />
+                </ListItem>
+            </List>
         </Paper>
     );
 }

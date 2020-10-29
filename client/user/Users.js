@@ -17,13 +17,13 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        padding: '0 30px',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)'
     },
     title: {
         padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px \
         ${theme.spacing(2)}px`,
-        color: theme.palette.openTitle
+        color: theme.palette.openTitle,
+        background: 'linear-gradient(45deg, #e194ff 30%, #f305ff 50%)'
     }
 }));
 

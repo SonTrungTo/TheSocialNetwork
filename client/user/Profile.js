@@ -12,6 +12,7 @@ import Delete from "@material-ui/icons/Delete";
 import Avatar from "@material-ui/core/Avatar";
 import Person from "@material-ui/icons/Person";
 import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Redirect, Link } from "react-router-dom";
 import auth from "../auth/auth-helper";
@@ -54,7 +55,7 @@ export default function Profile(props) {
         return function cleanUp() {
             abortController.abort();
         };
-    }, []);
+    }, [props.match.params.userId]);
 
     if (redirectToSignin) {
         return (<Redirect to="/signin" />);

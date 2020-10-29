@@ -51,7 +51,7 @@ const read = async (params, credentials, signal) => {
 const update = async (params, credentials, user) => {
     try {
         const response = await fetch('/api/users/' + params.userId, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': "application/json",
                 'Accept': "application/json",

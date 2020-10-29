@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
+import { pink } from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
     typography: {
@@ -7,19 +7,19 @@ const theme = createMuiTheme({
     },
     palette: {
         primary: {
-            light: '#4fb099',
-            main: '#28ccb9',
-            dark: '#14665d',
-            contrastText: "#fff"
+            light: '#5c67a3',
+            main: '#3f4771',
+            dark: '#2e355b',
+            contrastText: '#fff'
         },
         secondary: {
-            light: '#ffc17a',
-            main: '#ff9924',
-            dark: '#63421c',
-            contrastText: "#000"
+            light: '#ff79b0',
+            main: '#ff4081',
+            dark: '#c60055',
+            contrastText: '#000'
         },
-        openTitle: '#2f46bc',
-        protectedTitle: blue['400'],
+        openTitle: '#3f4771',
+        protectedTitle: pink['400'],
         type: 'light'
     }
 });

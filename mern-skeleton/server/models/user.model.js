@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     updated: Date,
     hashed_password: {
         type: String,
-        required: 'Hashed password is required'
+        required: 'Password is required'
     },
     salt: String
 });
@@ -33,6 +33,14 @@ UserSchema.virtual('password')
     })
     .get(function () {
         return this._password;
+    });
+
+UserSchema.virtual('retypePassword')
+    .set(function (retypePassword) {
+        this._retypePassword = retypePassword;
+    })
+    .get(function () {
+        return this._retypePassword;
     });
 
 UserSchema.methods = {
@@ -67,6 +75,9 @@ UserSchema.path('hashed_password').validate(function (v) {
     }
     if (this.isNew && !this._password) {
         this.invalidate('password', 'Password is required');
+    }
+    if (this._password !== this._retypePassword) {
+        this.invalidate('password', 'Password checks do not match');
     }
 }, null);
 

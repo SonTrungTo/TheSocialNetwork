@@ -16,6 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Redirect, Link } from "react-router-dom";
 import auth from "../auth/auth-helper";
 import { read } from "./api-user";
+import DeleteUser from "./DeleteUser";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -79,9 +80,7 @@ export default function Profile(props) {
                                 <Edit />
                             </IconButton>
                         </Link>
-                        <IconButton color="secondary">
-                            <Delete />
-                        </IconButton>
+                        <DeleteUser userId={ user._id } />
                     </ListItemSecondaryAction>
                     ) }
                 </ListItem>

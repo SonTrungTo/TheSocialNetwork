@@ -7,7 +7,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
 import Avatar from "@material-ui/core/Avatar";
 import Person from "@material-ui/icons/Person";
 import Divider from "@material-ui/core/Divider";

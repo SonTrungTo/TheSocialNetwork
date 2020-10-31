@@ -53,11 +53,10 @@ const update = async (params, credentials, user) => {
         const response = await fetch('/api/users/' + params.userId, {
             method: 'PUT',
             headers: {
-                'Content-Type': "application/json",
                 'Accept': "application/json",
                 'Authorization': 'Bearer ' + credentials.t
             },
-            body: JSON.stringify(user)
+            body: user
         });
         return await response.json();
     } catch (err) {

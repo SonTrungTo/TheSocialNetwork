@@ -1,6 +1,9 @@
 import User from "../models/user.model";
 import dbErrorHandler from "../helpers/dbErrorHandler";
 import extend from "lodash/extend";
+import formidable from "formidable";
+import fs from "fs";
+import defaultPerson from "../../client/assets/images/defaultPhoto.png";
 
 const list = async (req, res) => {
     try {
@@ -35,19 +38,32 @@ const read = (req, res) => {
 };
 
 const update = async (req, res) => {
-    try {
+    let form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return res.status(400).json({
+                error: "Unable to upload photo"
+            });
+        }
         let user = req.profile;
-        user = extend(user, req.body);
+        user = extend(user, fields);
         user.updated = Date.now();
-        await user.save();
-        user.hashed_password = undefined;
-        user.salt = undefined;
-        return res.status(200).json(user);
-    } catch (err) {
-        return res.status(400).json({
-            error: dbErrorHandler.getErrorMessage(err)
-        });
-    }
+        if (files.photo) {
+            user.photo.data = fs.readFileSync(files.photo.path);
+            user.photo.contentType = files.photo.type;
+        }
+        try {
+            await user.save();
+            user.hashed_password = undefined;
+            user.salt = undefined;
+            return res.status(200).json(user);
+        } catch (err) {
+            return res.status(400).json({
+                error: dbErrorHandler.getErrorMessage(err)
+            });
+        }
+    });
 };
 
 const remove = async (req, res) => {
@@ -62,6 +78,18 @@ const remove = async (req, res) => {
             error: dbErrorHandler.getErrorMessage(err)
         });
     }
+};
+
+const photo = (req, res, next) => {
+    if (req.profile.photo.data) {
+        res.set("Content-Type", req.profile.photo.contentType);
+        return res.send(req.profile.photo.data);
+    }
+    next();
+};
+
+const defaultPhoto = (req, res) => {
+    return res.sendFile(process.cwd()+defaultPerson);
 };
 
 const userByID = async (req, res, next, id) => {
@@ -82,5 +110,5 @@ const userByID = async (req, res, next, id) => {
 };
 
 export default {
-    list, create, read, update, remove, userByID
+    list, create, read, update, remove, userByID, photo, defaultPhoto
 };

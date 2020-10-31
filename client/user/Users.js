@@ -5,7 +5,6 @@ import auth from "../auth/auth-helper";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import Person from "@material-ui/icons/Person";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -55,13 +54,15 @@ export default function Users() {
                 All Users
             </Typography>
             <List dense>
-                { users.map((user, i) => 
+                { users.map((user, i) => {
+                const photoUrl = user._id ?
+                `/api/users/photo/${user._id}?${new Date().getTime()}` :
+                '/api/users/defaultphoto';
+                return (
                 <Link to={ "/user/" + user._id } key={ i }>
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar>
-                                <Person />
-                            </Avatar>
+                            <Avatar src={ photoUrl } />
                         </ListItemAvatar>
                         <ListItemText primary={ user.name } />
                         <ListItemSecondaryAction>
@@ -71,7 +72,9 @@ export default function Users() {
                         </ListItemSecondaryAction>
                     </ListItem>
                 </Link>
-                ) }
+                    );
+                })
+                }
             </List>
         </Paper>
     );

@@ -8,7 +8,6 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
 import Avatar from "@material-ui/core/Avatar";
-import Person from "@material-ui/icons/Person";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -31,6 +30,9 @@ export default function Profile(props) {
     const classes = useStyles();
     const [redirectToSignin, setRedirectToSignin] = useState(false);
     const [user, setUser] = useState({});
+    const photoUrl = user._id ?
+        `/api/users/photo/${user._id}?${new Date().getTime()}` :
+        '/api/users/defaultphoto';
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -65,9 +67,7 @@ export default function Profile(props) {
             <List>
                 <ListItem>
                     <ListItemAvatar>
-                        <Avatar>
-                            <Person />
-                        </Avatar>
+                        <Avatar src={ photoUrl } />
                     </ListItemAvatar>
                     <ListItemText primary={ user.name }
                     secondary={ user.email } />
@@ -82,6 +82,9 @@ export default function Profile(props) {
                         <DeleteUser userId={ user._id } />
                     </ListItemSecondaryAction>
                     ) }
+                </ListItem>
+                <ListItem>
+                    <ListItemText primary={ user.about } />
                 </ListItem>
                 <Divider />
                 <ListItem>

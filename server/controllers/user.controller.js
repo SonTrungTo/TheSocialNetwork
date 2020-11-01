@@ -47,7 +47,8 @@ const update = async (req, res) => {
             });
         }
         let user = req.profile;
-        user = extend(user, fields);
+        const photo = user.photo; // This is for updating without uploading a photo
+        user = extend(user, {...fields, photo: photo});
         user.updated = Date.now();
         if (files.photo) {
             user.photo.data = fs.readFileSync(files.photo.path);
@@ -94,7 +95,10 @@ const defaultPhoto = (req, res) => {
 
 const userByID = async (req, res, next, id) => {
     try {
-        let user = await User.findById(id);
+        let user = await User.findById(id)
+        .populate('following', '_id name')
+        .populate('followers', '_id name')
+        .exec();
         if (!user) {
             return res.status(400).json({
                 error: "User does not exist"

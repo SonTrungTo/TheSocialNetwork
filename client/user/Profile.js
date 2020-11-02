@@ -16,6 +16,8 @@ import auth from "../auth/auth-helper";
 import { read } from "./api-user";
 import DeleteUser from "./DeleteUser";
 import FollowProfileButton from "./FollowProfileButton";
+import Icon from "@material-ui/core/Icon";
+import Error from "@material-ui/icons/Error";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -24,30 +26,56 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main,
         textAlign: 'center',
         textTransform: 'capitalize'
+    },
+    error: {
+        marginRight: theme.spacing(2)
     }
 }));
 
 export default function Profile(props) {
     const classes = useStyles();
     const [redirectToSignin, setRedirectToSignin] = useState(false);
-    const [user, setUser] = useState({});
-    const photoUrl = user._id ?
-        `/api/users/photo/${user._id}?${new Date().getTime()}` :
+    const [values, setValues] = useState({
+        profileUser: {},
+        following: false,
+        error: ''
+    });
+    const photoUrl = values.profileUser._id ?
+        `/api/users/photo/${values.profileUser._id}?${new Date().getTime()}` :
         '/api/users/defaultphoto';
+    const jwt = auth.isAuthenticated();
+    const clickFollowButton = (callApi) => {
+        callApi({
+            userId: jwt.user._id
+        }, {t: jwt.token}, values.profileUser._id).then(data => {
+            if (data.error) {
+                setValues({...values, error: data.error});
+            } else {
+                setValues({...values, following: !values.following,
+                profileUser: data, error: ''});
+            }
+        });
+    };
 
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
-        const { token } = auth.isAuthenticated();
+        const checkFollowing = (profileUser) => {
+            const match = profileUser.followers.some(follower => {
+                return follower._id === jwt.user._id;
+            });
+            return match;
+        };
 
         read({
             userId: props.match.params.userId
-        }, {t: token}, signal).then(data => {
+        }, {t: jwt.token}, signal).then(data => {
             if (data.error) {
                 console.log(data.error);
                 setRedirectToSignin(true);
             } else {
-                setUser(data);
+                const following = checkFollowing(data);
+                setValues({...values, profileUser: data, following: following});
             }
         });
 
@@ -70,30 +98,41 @@ export default function Profile(props) {
                     <ListItemAvatar>
                         <Avatar src={ photoUrl } />
                     </ListItemAvatar>
-                    <ListItemText primary={ user.name }
-                    secondary={ user.email } />
+                    <ListItemText primary={ values.profileUser.name }
+                    secondary={ values.profileUser.email } />
                     <ListItemSecondaryAction>
-                    { auth.isAuthenticated().user &&
-                    auth.isAuthenticated().user._id === user._id ?
+                    { jwt.user &&
+                    jwt.user._id === values.profileUser._id ?
                     (<div>
-                        <Link to={"/user/edit/" + user._id}>
+                        <Link to={"/user/edit/" + values.profileUser._id}>
                             <IconButton color="primary" aria-label="Edit">
                                 <Edit />
                             </IconButton>
                         </Link>
-                        <DeleteUser userId={ user._id } />
+                        <DeleteUser userId={ values.profileUser._id } />
                     </div>) :
-                    <FollowProfileButton />
+                    <FollowProfileButton following={ values.following }
+                    onButtonClick={ clickFollowButton } />
                     }
                     </ListItemSecondaryAction>
                 </ListItem>
+                { values.error && (
                 <ListItem>
-                    <ListItemText primary={ user.about } />
+                    <Typography color="error" component="p">
+                        <Icon color="error" className={ classes.error }>
+                            <Error />
+                        </Icon>
+                        { values.error }
+                    </Typography>
+                </ListItem>
+                ) }
+                <ListItem>
+                    <ListItemText primary={ values.profileUser.about } />
                 </ListItem>
                 <Divider />
                 <ListItem>
                     <ListItemText primary={
-                        "Joined: " + new Date(user.created).toDateString()
+                        "Joined: " + new Date(values.profileUser.created).toDateString()
                     } />
                 </ListItem>
             </List>

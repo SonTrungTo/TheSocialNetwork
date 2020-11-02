@@ -8,22 +8,22 @@ router.route("/api/users")
     .get(authCtrl.requireSignin, userCtrl.list)
     .post(userCtrl.create);
 
-router.route("/api/users/:userId")
-    .get(authCtrl.requireSignin, userCtrl.read)
-    .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
-    .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove);
-
-router.route("/api/users/photo/:userId")
-    .get(userCtrl.photo, userCtrl.defaultPhoto);
-router.route("/api/users/defaultphoto")
-    .get(userCtrl.defaultPhoto);
-
 router.route("/api/users/follow")
     .put(authCtrl.requireSignin,
         userCtrl.addFollowing, userCtrl.addFollowers);
 router.route("/api/users/unfollow")
     .put(authCtrl.requireSignin,
         userCtrl.removeFollowing, userCtrl.removeFollowers);
+
+router.route("/api/users/photo/:userId")
+    .get(userCtrl.photo, userCtrl.defaultPhoto);
+router.route("/api/users/defaultphoto")
+        .get(userCtrl.defaultPhoto);
+
+router.route("/api/users/:userId")
+    .get(authCtrl.requireSignin, userCtrl.read)
+    .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
+    .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove);
 
 router.param('userId', userCtrl.userByID);
 

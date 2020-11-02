@@ -93,6 +93,72 @@ const defaultPhoto = (req, res) => {
     return res.sendFile(process.cwd()+defaultPerson);
 };
 
+const addFollowing = async (req, res, next) => {
+    try {
+        await User.findByIdAndUpdate(req.body.userId, {
+            $push: {following: req.body.followId}
+        });
+        next();
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
+const addFollowers = async (req, res) => {
+    try {
+        const result = await User.findByIdAndUpdate(req.body.followId, {
+            $push: {followers: req.body.userId}
+        }, {
+            new: true
+        })
+        .populate('following', '_id name')
+        .populate('followers', '_id name')
+        .exec();
+        result.hashed_password = undefined;
+        result.salt = undefined;
+        return res.status(200).json(result);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
+const removeFollowing = async (req, res, next) => {
+    try {
+        await User.findByIdAndUpdate(req.body.userId, {
+            $pull: {following: req.body.unfollowId}
+        });
+        next();
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
+const removeFollowers = async (req, res) => {
+    try {
+        const result = await User.findByIdAndUpdate(req.body.unfollowId, {
+            $pull: {followers: req.body.userId}
+        }, {
+            new: true
+        })
+        .populate('following', '_id name')
+        .populate('followers', '_id name')
+        .exec();
+        result.hashed_password = undefined;
+        result.salt = undefined;
+        return res.status(200).json(result);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
 const userByID = async (req, res, next, id) => {
     try {
         let user = await User.findById(id)
@@ -114,5 +180,6 @@ const userByID = async (req, res, next, id) => {
 };
 
 export default {
-    list, create, read, update, remove, userByID, photo, defaultPhoto
+    list, create, read, update, remove, userByID, photo, defaultPhoto,
+    addFollowing, addFollowers, removeFollowing, removeFollowers
 };

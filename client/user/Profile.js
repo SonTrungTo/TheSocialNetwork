@@ -15,6 +15,7 @@ import { Redirect, Link } from "react-router-dom";
 import auth from "../auth/auth-helper";
 import { read } from "./api-user";
 import DeleteUser from "./DeleteUser";
+import FollowProfileButton from "./FollowProfileButton";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -71,17 +72,20 @@ export default function Profile(props) {
                     </ListItemAvatar>
                     <ListItemText primary={ user.name }
                     secondary={ user.email } />
-                    { auth.isAuthenticated().user &&
-                    auth.isAuthenticated().user._id === user._id && (
                     <ListItemSecondaryAction>
+                    { auth.isAuthenticated().user &&
+                    auth.isAuthenticated().user._id === user._id ?
+                    (<div>
                         <Link to={"/user/edit/" + user._id}>
                             <IconButton color="primary" aria-label="Edit">
                                 <Edit />
                             </IconButton>
                         </Link>
                         <DeleteUser userId={ user._id } />
+                    </div>) :
+                    <FollowProfileButton />
+                    }
                     </ListItemSecondaryAction>
-                    ) }
                 </ListItem>
                 <ListItem>
                     <ListItemText primary={ user.about } />

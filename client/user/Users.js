@@ -23,6 +23,11 @@ const useStyles = makeStyles(theme => ({
         ${theme.spacing(2)}px`,
         color: theme.palette.openTitle,
         background: 'linear-gradient(45deg, #e194ff 30%, #f305ff 50%)'
+    },
+    bigAvatar: {
+        width: 60,
+        height: 60,
+        margin: 10
     }
 }));
 
@@ -62,7 +67,8 @@ export default function Users() {
                 <Link to={ "/user/" + user._id } key={ i }>
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar src={ photoUrl } />
+                            <Avatar src={ photoUrl }
+                            className={ classes.bigAvatar } />
                         </ListItemAvatar>
                         <ListItemText primary={ user.name } />
                         <ListItemSecondaryAction>

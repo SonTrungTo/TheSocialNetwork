@@ -18,6 +18,7 @@ import DeleteUser from "./DeleteUser";
 import FollowProfileButton from "./FollowProfileButton";
 import Icon from "@material-ui/core/Icon";
 import Error from "@material-ui/icons/Error";
+import ProfileTabs from "./ProfileTabs";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -29,6 +30,11 @@ const useStyles = makeStyles(theme => ({
     },
     error: {
         marginRight: theme.spacing(2)
+    },
+    bigAvatar: {
+        width: 60,
+        height: 60,
+        margin: 10
     }
 }));
 
@@ -96,7 +102,7 @@ export default function Profile(props) {
             <List>
                 <ListItem>
                     <ListItemAvatar>
-                        <Avatar src={ photoUrl } />
+                        <Avatar src={ photoUrl } className={ classes.bigAvatar } />
                     </ListItemAvatar>
                     <ListItemText primary={ values.profileUser.name }
                     secondary={ values.profileUser.email } />
@@ -134,6 +140,9 @@ export default function Profile(props) {
                     <ListItemText primary={
                         "Joined: " + new Date(values.profileUser.created).toDateString()
                     } />
+                </ListItem>
+                <ListItem>
+                    <ProfileTabs user={ values.profileUser } />
                 </ListItem>
             </List>
         </Paper>

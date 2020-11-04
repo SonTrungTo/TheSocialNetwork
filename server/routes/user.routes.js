@@ -18,7 +18,10 @@ router.route("/api/users/unfollow")
 router.route("/api/users/photo/:userId")
     .get(userCtrl.photo, userCtrl.defaultPhoto);
 router.route("/api/users/defaultphoto")
-        .get(userCtrl.defaultPhoto);
+    .get(userCtrl.defaultPhoto);
+
+router.route("/api/users/findpeople/:userId")
+    .get(authCtrl.requireSignin, userCtrl.findPeople);
 
 router.route("/api/users/:userId")
     .get(authCtrl.requireSignin, userCtrl.read)

@@ -159,6 +159,21 @@ const removeFollowers = async (req, res) => {
     }
 };
 
+const findPeople = async (req, res) => {
+    let following = req.profile.following;
+    following.push(req.profile);
+    try {
+        const unfollowingUsers = await User.find({_id: {
+            $nin: following
+        }}).select('name');
+        return res.status(200).json(unfollowingUsers);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
 const userByID = async (req, res, next, id) => {
     try {
         let user = await User.findById(id)
@@ -181,5 +196,6 @@ const userByID = async (req, res, next, id) => {
 
 export default {
     list, create, read, update, remove, userByID, photo, defaultPhoto,
-    addFollowing, addFollowers, removeFollowing, removeFollowers
+    addFollowing, addFollowers, removeFollowing, removeFollowers,
+    findPeople
 };

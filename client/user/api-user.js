@@ -114,6 +114,24 @@ const unfollow = async (params, credentials, unfollowId) => {
     }
 };
 
+const findPeople = async (params, credentials, signal) => {
+    try {
+        const response = await fetch('/api/users/findpeople/' + params.userId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json",
+                'Authorization': 'Bearer ' + credentials.t
+            },
+            signal: signal
+        });
+        return await response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export {
-    create, list, read, update, remove, follow, unfollow
+    create, list, read, update, remove, follow, unfollow,
+    findPeople
 };

@@ -19,6 +19,7 @@ import FollowProfileButton from "./FollowProfileButton";
 import Icon from "@material-ui/core/Icon";
 import Error from "@material-ui/icons/Error";
 import ProfileTabs from "./ProfileTabs";
+import { listByUser } from "../post/api-post";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -46,6 +47,7 @@ export default function Profile(props) {
         following: false,
         error: ''
     });
+    const [posts, setPosts] = useState([]);
     const photoUrl = values.profileUser._id ?
         `/api/users/photo/${values.profileUser._id}?${new Date().getTime()}` :
         '/api/users/defaultphoto';
@@ -61,6 +63,25 @@ export default function Profile(props) {
                 profileUser: data, error: ''});
             }
         });
+    };
+    const loadPosts = (user) => {
+        listByUser({
+            userId: user
+        }, {t: jwt.token}).then(data => {
+            if (data.error) {
+                console.log(data.error);
+                setValues({...values, error: data.error});
+            } else {
+                setValues({...values, error: ''});
+                setPosts(data);
+            }
+        });
+    };
+    const removePost = (post) => {
+        let updatedPosts = [...posts];
+        let index = updatedPosts.indexOf(post);
+        updatedPosts.splice(index, 1);
+        setPosts(updatedPosts);
     };
 
     useEffect(() => {
@@ -82,6 +103,7 @@ export default function Profile(props) {
             } else {
                 const following = checkFollowing(data);
                 setValues({...values, profileUser: data, following: following});
+                loadPosts(data._id);
             }
         });
 
@@ -142,7 +164,8 @@ export default function Profile(props) {
                     } />
                 </ListItem>
                 <ListItem>
-                    <ProfileTabs user={ values.profileUser } />
+                    <ProfileTabs user={ values.profileUser } posts={ posts }
+                    removeUpdate={ removePost } />
                 </ListItem>
             </List>
         </Paper>

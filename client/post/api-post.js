@@ -31,6 +31,22 @@ const listByUser = async (params, credentials) => {
     }
 };
 
+const create = async (params, credentials, post) => {
+    try {
+        const response = await fetch('/api/posts/new/' + params.userId, {
+            method: 'POST',
+            headers: {
+                'Accept': "application/json",
+                'Authorization': 'Bearer ' + credentials.t
+            },
+            body: post
+        });
+        return await response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export {
-    listNewsFeed, listByUser
+    listNewsFeed, listByUser, create
 };

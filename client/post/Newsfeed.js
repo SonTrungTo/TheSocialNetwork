@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Newsfeed(props) {
+export default function Newsfeed() {
     const classes = useStyles();
     const [posts, setPosts] = useState([]);
     const [errorState, setErrorState] = useState({

@@ -16,6 +16,9 @@ router.route("/api/posts/new/:userId")
 
 router.route("/api/posts/photo/:postId").get(postCtrl.photo);
 
+router.route("/api/posts/:postId")
+    .delete(authCtrl.requireSignin, postCtrl.isPoster, postCtrl.remove);
+
 router.param('userId', userCtrl.userByID);
 router.param('postId', postCtrl.postByID);
 

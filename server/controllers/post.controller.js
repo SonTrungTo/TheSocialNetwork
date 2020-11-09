@@ -68,6 +68,29 @@ const photo = (req, res) => {
     return res.status(200).send(req.post.photo.data);
 };
 
+const isPoster = (req, res, next) => {
+    let isPoster = req.post && req.auth &&
+    String(req.post.postedBy._id) === String(req.auth._id);
+    if (!isPoster) {
+        return res.status(400).json({
+            error: "Unauthorized request made by unauthorized user"
+        });
+    }
+    next();
+};
+
+const remove = async (req, res) => {
+    try {
+        let post = req.post;
+        let deletedPost = await post.remove();
+        return res.status(200).json(deletedPost);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
 const postByID = async (req, res, next, id) => {
     try {
         let post = await Post.findById(id)
@@ -85,8 +108,9 @@ const postByID = async (req, res, next, id) => {
             error: "Could not fetch the post"
         });
     }
-}
+};
 
 export default {
-    listNewsFeed, listByUser, create, photo, postByID
+    listNewsFeed, listByUser, create, photo, postByID, isPoster,
+    remove
 };

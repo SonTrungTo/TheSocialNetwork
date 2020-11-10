@@ -77,7 +77,7 @@ export default function Post(props) {
             } else {
                 setValues({
                     ...values,
-                    like: checkLike(data.likes),
+                    like: !values.like,
                     likes: data.likes.length
                 });
             }
@@ -94,6 +94,10 @@ export default function Post(props) {
                 props.onRemove(data);
             }
         });
+    };
+
+    const updateComments = () => {
+        
     };
 
     return (
@@ -148,7 +152,9 @@ export default function Post(props) {
                     <span>{ values.comments.length }</span>
                 </CardActions>
                 <Divider />
-                <Comments />
+                <Comments postId={ props.post._id }
+                comments={ values.comments }
+                updateComments={ updateComments } />
             </Card>
         </div>
     );

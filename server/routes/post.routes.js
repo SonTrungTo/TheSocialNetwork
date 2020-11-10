@@ -21,6 +21,9 @@ router.route("/api/posts/like")
 router.route("/api/posts/unlike")
     .put(authCtrl.requireSignin, postCtrl.unlike);
 
+router.route("/api/posts/comment")
+    .put(authCtrl.requireSignin, postCtrl.comment);
+
 router.route("/api/posts/:postId")
     .delete(authCtrl.requireSignin, postCtrl.isPoster, postCtrl.remove);
 

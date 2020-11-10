@@ -91,6 +91,36 @@ const remove = async (req, res) => {
     }
 };
 
+const like = async (req, res) => {
+    try {
+        let post = await Post.findByIdAndUpdate(req.body.postId, {
+            $push: {likes: req.body.userId}
+        }, {
+            new: true
+        });
+        return res.status(200).json(post);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
+const unlike = async (req, res) => {
+    try {
+        let post = await Post.findByIdAndUpdate(req.body.postId, {
+            $pull: {likes: req.body.userId}
+        }, {
+            new: true
+        });
+        return res.status(200).json(post);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
 const postByID = async (req, res, next, id) => {
     try {
         let post = await Post.findById(id)
@@ -112,5 +142,5 @@ const postByID = async (req, res, next, id) => {
 
 export default {
     listNewsFeed, listByUser, create, photo, postByID, isPoster,
-    remove
+    remove, like, unlike
 };

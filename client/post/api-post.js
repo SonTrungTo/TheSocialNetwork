@@ -62,6 +62,40 @@ const remove = async (params, credentials) => {
     }
 };
 
+const like = async (params, credentials, postId) => {
+    try {
+        const response = await fetch('/api/posts/like', {
+            method: 'PUT',
+            headers: {
+                'Accept': "application/json",
+                'Content-Type': "application/json",
+                'Authorization': 'Bearer ' + credentials.t
+            },
+            body: JSON.stringify({userId: params.userId, postId})
+        });
+        return await response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+const unlike = async (params, credentials, postId) => {
+    try {
+        const response = await fetch('/api/posts/unlike', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json",
+                'Authorization': 'Bearer ' + credentials.t
+            },
+            body: JSON.stringify({userId: params.userId, postId})
+        });
+        return await response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export {
-    listNewsFeed, listByUser, create, remove
+    listNewsFeed, listByUser, create, remove, like, unlike
 };

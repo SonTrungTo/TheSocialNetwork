@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import auth from "../auth/auth-helper";
-import { remove } from "./api-post";
+import { remove, like, unlike } from "./api-post";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -57,9 +57,31 @@ Post.propTypes = {
 export default function Post(props) {
     const classes = useStyles();
     const jwt = auth.isAuthenticated();
+    const checkLike = (likes) => {
+        let match = likes.indexOf(jwt.user._id) !== -1;
+        return match;
+    };
+    const [values, setValues] = useState({
+        like: checkLike(props.post.likes),
+        likes: props.post.likes.length,
+        comments: props.post.comments
+    });
 
     const clickLike = () => {
-
+        let callApi = values.like ? unlike : like;
+        callApi({
+            userId: jwt.user._id
+        }, {t: jwt.token}, props.post._id).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                setValues({
+                    ...values,
+                    like: checkLike(data.likes),
+                    likes: data.likes.length
+                });
+            }
+        });
     };
 
     const deletePost = () => {
@@ -118,12 +140,12 @@ export default function Post(props) {
                         color="secondary">
                             <FavoriteBorderIcon />
                         </IconButton>
-                    ) } <span>{ props.post.likes.length }</span>
+                    ) } <span>{ values.likes }</span>
                     <IconButton className={ classes.button }
                     color="primary" aria-label="Comment">
                         <CommentIcon />
                     </IconButton>
-                    <span>{ props.post.comments.length }</span>
+                    <span>{ values.comments.length }</span>
                 </CardActions>
                 <Divider />
                 <Comments />

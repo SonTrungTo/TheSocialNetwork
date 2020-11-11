@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import auth from "../auth/auth-helper";
@@ -96,8 +96,8 @@ export default function Post(props) {
         });
     };
 
-    const updateComments = () => {
-        
+    const updateComments = (comments) => {
+        setValues({...values, comments: comments});
     };
 
     return (
@@ -132,7 +132,7 @@ export default function Post(props) {
                     ) }
                 </CardContent>
                 <CardActions>
-                    { props.post.likes ? (
+                    { values.like ? (
                         <IconButton aria-label="Like"
                         onClick={ clickLike } className={ classes.button }
                         color="secondary">

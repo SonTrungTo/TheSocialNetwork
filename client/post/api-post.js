@@ -117,7 +117,27 @@ const comment = async (params, credentials, postId, comment) => {
     }
 };
 
+const uncomment = async (credentials, postId, comment) => {
+    try {
+        const response = await fetch('/api/posts/uncomment', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json",
+                'Authorization': 'Bearer ' + credentials.t
+            },
+            body: JSON.stringify({
+                postId: postId,
+                comment: comment
+            })
+        });
+        return await response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export {
     listNewsFeed, listByUser, create, remove, like, unlike,
-    comment
+    comment, uncomment
 };

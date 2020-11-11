@@ -70,9 +70,7 @@ export default function Profile(props) {
         }, {t: jwt.token}).then(data => {
             if (data.error) {
                 console.log(data.error);
-                setValues({...values, error: data.error});
             } else {
-                setValues({...values, error: ''});
                 setPosts(data);
             }
         });

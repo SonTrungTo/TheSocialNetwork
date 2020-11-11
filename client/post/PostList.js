@@ -20,7 +20,7 @@ export default function PostList(props) {
     return (
         <div className={ classes.postList }>
             { props.posts.map((item, i) => {
-                <Post post={ item } key={ i }
+                return <Post post={ item } key={ i }
                 onRemove={ props.removeUpdate } />
             }) 
             }

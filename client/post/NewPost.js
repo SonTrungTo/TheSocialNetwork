@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(2),
         display: "flex",
-        flexDirection: 'reverse-row'
+        flexDirection: 'row-reverse'
     },
     input: {
         display: 'none'
@@ -144,9 +144,9 @@ export default function NewPost(props) {
                     </Typography>
                     ) }
                 </CardContent>
-                <CardActions>
+                <CardActions className={ classes.submit }>
                     <Button color="primary" variant="contained"
-                    onClick={ handleClick } className={ classes.submit }
+                    onClick={ handleClick }
                     disabled={ values.text === '' }>
                         POST
                     </Button>

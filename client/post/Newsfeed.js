@@ -13,6 +13,17 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
     error: {
         marginRight: theme.spacing(2)
+    },
+    card: {
+        margin: 'auto',
+        paddingTop: 0,
+        paddingBottom: theme.spacing(2)
+    },
+    title: {
+        padding: `${theme.spacing(3)}px ${theme.spacing(1.5)}px
+        ${theme.spacing(2)}px`,
+        color: theme.palette.openTitle,
+        fontSize: '1em'
     }
 }));
 
@@ -61,8 +72,8 @@ export default function Newsfeed() {
 
     return (
         <div>
-            <Card>
-                <Typography type="title">Newsfeed</Typography>
+            <Card className={ classes.card }>
+                <Typography className={ classes.title }>Newsfeed</Typography>
                 <Divider />
                 <NewPost addUpdate={ addPost } />
                 <Divider />

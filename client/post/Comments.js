@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { comment } from "./api-post";
+import { comment, uncomment } from "./api-post";
 import auth from "../auth/auth-helper";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -70,8 +70,16 @@ export default function Comments(props) {
         setText(event.target.value);
     };
 
-    const deleteComment = () => {
-
+    const deleteComment = comment => event => {
+        uncomment({
+            t: jwt.token
+        }, props.postId, comment).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                props.updateComments(data.comments);
+            }
+        });
     };
 
     const commentBody = comment => {
@@ -86,7 +94,7 @@ export default function Comments(props) {
                     { new Date(comment.created).toDateString() }
                     { jwt.user._id === comment.postedBy._id &&
                     <IconButton color="secondary" className={ classes.deleteComment }
-                    onClick={ deleteComment }>
+                    onClick={ deleteComment(comment) }>
                         <Delete />    
                     </IconButton> }
                 </span>
@@ -113,7 +121,7 @@ export default function Comments(props) {
             { props.comments.map((comment, i) => {
                 return (
                     <CardHeader avatar={
-                        <Avatar src={ "/api/users/photo" + comment.postedBy._id }
+                        <Avatar src={ "/api/users/photo/" + comment.postedBy._id }
                          />
                     }
                     title={ commentBody(comment) }

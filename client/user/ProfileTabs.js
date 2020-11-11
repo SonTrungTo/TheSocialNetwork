@@ -8,7 +8,6 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import FollowGrid from "./FollowGrid";
-import FindPeople from "./FindPeople";
 import PostList from "../post/PostList";
 
 function TabPanel(props) {
@@ -53,6 +52,12 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+ProfileTabs.propTypes = {
+    user: PropTypes.object.isRequired,
+    posts: PropTypes.array.isRequired,
+    removeUpdate: PropTypes.func.isRequired
+};
+
 export default function ProfileTabs(props) {
     const classes = useStyles();
     const theme = useTheme();
@@ -87,7 +92,6 @@ export default function ProfileTabs(props) {
             index={value}
             onChangeIndex={handleChangeIndex}>
                 <TabPanel value={value} index={0} dir={theme.direction}>
-                    <FindPeople />
                     <PostList posts={ props.posts }
                     removeUpdate={ props.removeUpdate } />
                 </TabPanel>

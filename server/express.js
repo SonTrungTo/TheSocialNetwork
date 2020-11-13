@@ -12,7 +12,7 @@ import postRoutes from "./routes/post.routes";
 
 // Development bundling client codes
 import path from "path";
-import devBundle from "./devBundle"; // Comment out when in production
+//import devBundle from "./devBundle"; // Comment out when in production
 
 // Server-side rendering
 import React from "react";
@@ -26,7 +26,7 @@ const app = express();
 const CURRENT_WORKING_DIR = process.cwd();
 
 app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
-devBundle.compile(app); // Comment out when in production
+//devBundle.compile(app); // Comment out when in production
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

@@ -15,7 +15,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import CommentIcon from "@material-ui/icons/Comment";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
-import Comments from "./Comments";
+import CommentList from "./CommentList";
 import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles(theme => ({
@@ -152,7 +152,7 @@ export default function Post(props) {
                     <span>{ values.comments.length }</span>
                 </CardActions>
                 <Divider />
-                <Comments postId={ props.post._id }
+                <CommentList postId={ props.post._id }
                 comments={ values.comments }
                 updateComments={ updateComments } />
             </Card>

@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2)
     },
     media: {
-        height: 200
+        height: 400
     },
     button: {
         margin: theme.spacing(2)

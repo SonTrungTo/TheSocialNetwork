@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { create } from "../post/api-post";
+import { read } from "../user/api-user";
 import auth from "../auth/auth-helper";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -78,7 +79,23 @@ export default function NewPost(props) {
     `/api/users/defaultphoto`;
 
     useEffect(() => {
-        setValues({...values, user: jwt.user});
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+
+        read({
+            userId: jwt.user._id
+        }, {t: jwt.token}, signal).then(data => {
+            if (data.error) {
+                console.log(data.error);
+                setValues({...values, error: data.error});
+            } else {
+                setValues({...values, user: data, error: ''});
+            }
+        });
+
+        return function cleanUp() {
+            abortController.abort();
+        }
     }, []);
 
     const handleChange = name => event => {

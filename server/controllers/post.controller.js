@@ -160,6 +160,40 @@ const uncomment = async (req, res) => {
     }
 };
 
+const commentLike = async (req, res) => {
+    let comment = req.body.comment;
+    try {
+        let post = await Post.findByIdAndUpdate(req.body.postId, {
+            $push: {"comments.$[el].likes": req.body.userId}
+        }, {
+            new: true,
+            arrayFilters: [{"el._id": comment._id}]
+        });
+        return res.status(200).json(post);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
+const commentUnlike = async (req, res) => {
+    let comment = req.body.comment;
+    try {
+        let post = await Post.findByIdAndUpdate(req.body.postId, {
+            $pull: {"comments.$[el].likes": req.body.userId}
+        }, {
+            new: true,
+            arrayFilters: [{"el._id": comment._id}]
+        });
+        return res.status(200).json(post);
+    } catch (err) {
+        return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err)
+        });
+    }
+};
+
 const postByID = async (req, res, next, id) => {
     try {
         let post = await Post.findById(id)
@@ -181,5 +215,5 @@ const postByID = async (req, res, next, id) => {
 
 export default {
     listNewsFeed, listByUser, create, photo, postByID, isPoster,
-    remove, like, unlike, comment, uncomment
+    remove, like, unlike, comment, uncomment, commentLike, commentUnlike
 };

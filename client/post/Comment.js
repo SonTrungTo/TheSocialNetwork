@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     },
     like: {
         alignSelf: 'center',
-        width: 125
+        minWidth: 125
     }
 }));
 
